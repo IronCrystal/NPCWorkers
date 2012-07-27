@@ -1,0 +1,8 @@
+name: NPCWorkers
+main: me.IronCrystal.NPCWorkers.NPCWorkers
+version: 1.0
+platform: SERVER
+depends: [Vanilla]
+commands:
+  lumberjack:
+    description: Spawns a lumberjack.
