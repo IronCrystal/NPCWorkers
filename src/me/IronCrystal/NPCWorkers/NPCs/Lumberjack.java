@@ -13,8 +13,8 @@ public class Lumberjack extends Worker {
 	protected Lumberjack lumberjack;
 	private LumberjackState state;
 
-	public Lumberjack(String Name) {
-		super(Name);
+	public Lumberjack(String name) {
+		super(name);
 	}
 
 	/**
