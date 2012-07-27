@@ -74,9 +74,10 @@ public class Worker extends Human {
 			{
 				for (int z = loc.getBlockZ(); z < loc.getBlockZ() + radius; z++) 
 				{
-					Point nl = new Point(loc.getWorld(), x, y, z);
-
-					Block block = loc.getWorld().getBlock(nl);
+					/**
+					 * Not sure if this works....Just for now.  Haven't tested.
+					 */
+					Block block = loc.getWorld().getBlock(x, y, z, locWorld);
 
 					blocks.add(block);
 
@@ -90,9 +91,7 @@ public class Worker extends Human {
 
 				for (int z = loc.getBlockZ(); z > loc.getBlockZ() - radius; z--) {
 
-					Point nl = new Point(loc.getWorld(), x, y, z);
-
-					Block block = loc.getWorld().getBlock(nl);
+					Block block = loc.getWorld().getBlock(x, y, z, locWorld);
 
 					blocks.add(block);
 				}

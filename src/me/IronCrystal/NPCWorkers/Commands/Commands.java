@@ -6,9 +6,7 @@ import org.spout.api.command.Command;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandExecutor;
 import org.spout.api.command.CommandSource;
-import org.spout.api.entity.Entity;
 import org.spout.api.exception.CommandException;
-import org.spout.api.geo.World;
 import org.spout.api.player.Player;
 
 public class Commands implements CommandExecutor {
@@ -18,6 +16,7 @@ public class Commands implements CommandExecutor {
 		plugin = instance;
 	}*/
 
+	@SuppressWarnings("null")
 	@Override
 	public boolean processCommand(CommandSource source, Command cmd, CommandContext args) throws CommandException {
 		Player player = null;
@@ -27,7 +26,7 @@ public class Commands implements CommandExecutor {
 		if (player != null) 
 		{
 			if(cmd.getPreferredName().compareToIgnoreCase("lumberjack") == 0) {
-				World world = player.getEntity().getWorld();
+				//World world = player.getEntity().getWorld();
 				player.sendMessage("You did a command!");
 				Lumberjack lumberjack = null;
 				lumberjack.spawn(player.getEntity().getPosition(), player);
