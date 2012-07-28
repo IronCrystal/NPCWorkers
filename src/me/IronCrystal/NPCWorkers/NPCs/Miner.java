@@ -2,7 +2,6 @@ package me.IronCrystal.NPCWorkers.NPCs;
 
 import org.spout.api.geo.World;
 import org.spout.api.geo.discrete.Point;
-import org.spout.api.player.Player;
 
 public class Miner extends Worker {
 
@@ -44,17 +43,6 @@ public class Miner extends Worker {
 		
 		miner.stopDigging(point);
 	}
-
-	/**
-	 * Spawning a Miner
-	 * Needed?
-	 * @param Point, Player
-	 */
-	public Miner spawn(Point point, Player player) {
-		Miner miner = (Miner) point.getWorld().createAndSpawnEntity(point, new Miner(player.getName() + "'s Miner"));
-		state = MinerState.JUST_SPAWNED;
-		return miner;
-	}
 	
 	/**
 	 * Get the state at which the miner is in.
@@ -71,6 +59,7 @@ public class Miner extends Worker {
 		AT_CHEST,
 		MINING,
 		DONE_MINING,
+		WALKING_TO_MINE,
 		RETURNING_TO_CHEST,
 		RETURNING_TO_CHEST_AND_IS_NEAR_CHEST,
 		JUST_SPAWNED;

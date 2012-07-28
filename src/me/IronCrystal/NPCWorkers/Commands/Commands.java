@@ -29,13 +29,15 @@ public class Commands implements CommandExecutor {
 				//World world = player.getEntity().getWorld();
 				player.sendMessage("You did a command!");
 				Lumberjack lumberjack = null;
-				lumberjack.spawn(player.getEntity().getPosition(), player);
+				lumberjack.spawn(player.getEntity().getPosition(), player, "Lumberjack");
 				//Entity lumberjack = world.createAndSpawnEntity(player.getEntity().getPosition(), new Lumberjack ("Lumberjack"));
 				//player.sendMessage("" + lumberjack.getClass());
 				//lumberjack.setRenderedItemInHand(new ItemStack(Material.get((short) 279), 1));
+				return true;
 			}
 		}else{
 			source.sendMessage("You must be a player to access this command.");
+			return true;
 		}
 		return false;
 	}

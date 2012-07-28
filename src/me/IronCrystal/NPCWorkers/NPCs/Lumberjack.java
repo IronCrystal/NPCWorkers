@@ -5,7 +5,6 @@ import me.IronCrystal.NPCWorkers.CustomBlocks.StorageChest;
 import org.spout.api.geo.World;
 import org.spout.api.geo.discrete.Point;
 import org.spout.api.math.Vector3;
-import org.spout.api.player.Player;
 import org.spout.vanilla.material.block.solid.Log;
 
 public class Lumberjack extends Worker {
@@ -42,16 +41,6 @@ public class Lumberjack extends Worker {
 		Point point = new Point(world, x, y, z);
 
 		lumberjack.stopDigging(point);
-	}
-
-	/**
-	 * Spawning a Lumberjack
-	 * Needed?
-	 * @param Point, Player
-	 */
-	public Lumberjack spawn(Point point, Player player) {
-		Lumberjack lumberjack = (Lumberjack) point.getWorld().createAndSpawnEntity(point, new Lumberjack(player.getName() + "'s Lumberjack"));
-		return lumberjack;
 	}
 
 	public LumberjackState getState() {

@@ -3,6 +3,9 @@ package me.IronCrystal.NPCWorkers.NPCs;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.IronCrystal.NPCWorkers.Events.NPCSpawnEvent;
+
+import org.spout.api.Spout;
 import org.spout.api.geo.World;
 import org.spout.api.geo.cuboid.Block;
 import org.spout.api.geo.discrete.Point;
@@ -51,6 +54,20 @@ public class Worker extends Human {
 		return null;
 	}
 
+	/**
+	 * Spawns the worker and calls NPCSpawnEvent.
+	 * @param point
+	 * @param player
+	 * @param name
+	 * @return Worker
+	 */
+	public Worker spawn(Point point, Player player, String name) {
+		Worker worker = (Worker) point.getWorld().createAndSpawnEntity(point, new Worker(player.getName() + "'s " + name));
+		Spout.getEventManager().callEvent(new NPCSpawnEvent(worker));
+		return worker;
+	}
+	
+	
 	/**
 	 * Returns all the nearby blocks of the worker
 	 * @param Int
