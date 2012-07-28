@@ -7,6 +7,7 @@ import org.spout.api.player.Player;
 public class Miner extends Worker {
 
 	protected Miner miner;
+	private MinerState state;
 	
 	public Miner(String clientName) {
 		super(clientName);
@@ -25,6 +26,8 @@ public class Miner extends Worker {
 
 		Point point = new Point(world, x, y, z);
 
+		state = MinerState.MINING;
+		
 		miner.startDigging(point);
 	}
 	
@@ -37,6 +40,8 @@ public class Miner extends Worker {
 
 		Point point = new Point(world, x, y, z);
 
+		state = MinerState.DONE_MINING;
+		
 		miner.stopDigging(point);
 	}
 
@@ -47,7 +52,28 @@ public class Miner extends Worker {
 	 */
 	public Miner spawn(Point point, Player player) {
 		Miner miner = (Miner) point.getWorld().createAndSpawnEntity(point, new Miner(player.getName() + "'s Miner"));
+		state = MinerState.JUST_SPAWNED;
 		return miner;
+	}
+	
+	/**
+	 * Get the state at which the miner is in.
+	 */
+	public MinerState getState() {
+		return state;
+	}
+	
+	
+	/**
+	 * Enum for telling the state of the Miner.
+	 */
+	public enum MinerState {
+		AT_CHEST,
+		MINING,
+		DONE_MINING,
+		RETURNING_TO_CHEST,
+		RETURNING_TO_CHEST_AND_IS_NEAR_CHEST,
+		JUST_SPAWNED;
 	}
 	
 }
