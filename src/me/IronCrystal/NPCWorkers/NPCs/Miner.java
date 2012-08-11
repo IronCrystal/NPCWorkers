@@ -8,9 +8,8 @@ public class Miner extends Worker {
 	protected Miner miner;
 	private MinerState state;
 	
-	public Miner(String clientName) {
-		super(clientName);
-		// TODO Auto-generated constructor stub
+	public Miner(String name) {
+		super(name);
 	}
 	
 	/**

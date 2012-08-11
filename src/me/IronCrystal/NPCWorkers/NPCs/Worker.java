@@ -2,6 +2,7 @@ package me.IronCrystal.NPCWorkers.NPCs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import me.IronCrystal.NPCWorkers.Events.NPCSpawnEvent;
 
@@ -14,8 +15,9 @@ import org.spout.vanilla.controller.living.Human;
 
 public class Worker extends Human {
 
-	public Worker(String clientName) {
-		super(clientName);
+	private UUID id;
+	public Worker(String name) {
+		id = UUID.randomUUID();
 	}
 
 	/**
@@ -46,6 +48,14 @@ public class Worker extends Human {
 	}
 
 	/**
+	 * Get the Worker's custom id.
+	 * @return UUID
+	 */
+	public UUID getUUID() {
+		return id;
+	}
+	
+	/**
 	 * Gets the nearest storage chest for the worker.
 	 * Not ready.  Need a way to get block.
 	 * @return Block
@@ -56,17 +66,15 @@ public class Worker extends Human {
 
 	/**
 	 * Spawns the worker and calls NPCSpawnEvent.
-	 * @param point
-	 * @param player
-	 * @param name
+	 * @param Point
+	 * @param Worker
 	 * @return Worker
 	 */
-	public Worker spawn(Point point, Player player, String name) {
-		Worker worker = (Worker) point.getWorld().createAndSpawnEntity(point, new Worker(player.getName() + "'s " + name));
+	public static Worker spawn(Point point, Worker worker) {
+		worker = (Worker) point.getWorld().createAndSpawnEntity(point, worker);
 		Spout.getEventManager().callEvent(new NPCSpawnEvent(worker));
 		return worker;
 	}
-	
 	
 	/**
 	 * Returns all the nearby blocks of the worker
