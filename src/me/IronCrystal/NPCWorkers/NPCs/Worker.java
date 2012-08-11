@@ -70,9 +70,9 @@ public class Worker extends Human {
 	 * @param Worker
 	 * @return Worker
 	 */
-	public static Worker spawn(Point point, Worker worker) {
-		worker = (Worker) point.getWorld().createAndSpawnEntity(point, worker);
-		Spout.getEventManager().callEvent(new NPCSpawnEvent(worker));
+	public static Worker spawn(Player p, Worker worker) {
+		worker = (Worker) p.getPosition().getWorld().createAndSpawnEntity(p.getPosition(), worker);
+		Spout.getEventManager().callEvent(new NPCSpawnEvent(worker, p));
 		return worker;
 	}
 	

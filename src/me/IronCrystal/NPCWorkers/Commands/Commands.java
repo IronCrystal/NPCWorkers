@@ -23,7 +23,7 @@ public class Commands implements CommandExecutor {
 		{
 			if(cmd.getPreferredName().compareToIgnoreCase("lumberjack") == 0) {
 				Lumberjack lumberjack = new Lumberjack("Lumberjack");
-				Worker.spawn(player.getPosition(), lumberjack);
+				Worker.spawn(player, lumberjack);
 				player.sendMessage(ChatStyle.YELLOW, "[NPCWorkers] ", ChatStyle.CYAN, "Succesfully spawned a lumberjack");
 				return true;
 			}
