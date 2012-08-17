@@ -7,6 +7,7 @@ import java.util.UUID;
 import me.IronCrystal.NPCWorkers.Events.NPCSpawnEvent;
 
 import org.spout.api.Spout;
+import org.spout.api.entity.Entity;
 import org.spout.api.geo.World;
 import org.spout.api.geo.cuboid.Block;
 import org.spout.api.geo.discrete.Point;
@@ -18,6 +19,17 @@ public class Worker extends Human {
 	private UUID id;
 	public Worker(String name) {
 		id = UUID.randomUUID();
+	}
+	
+	public Point getFeetPosition() {
+		Point head = this.getHeadPosition();
+		int x = head.getBlockX();
+		int y = head.getBlockY();
+		int z = head.getBlockZ();
+		World world = head.getWorld();
+		
+		Point feet = new Point(world, y, z, x);
+		return feet;
 	}
 
 	/**
@@ -54,7 +66,7 @@ public class Worker extends Human {
 	public UUID getUUID() {
 		return id;
 	}
-	
+
 	/**
 	 * Gets the nearest storage chest for the worker.
 	 * Not ready.  Need a way to get block.
@@ -66,16 +78,25 @@ public class Worker extends Human {
 
 	/**
 	 * Spawns the worker and calls NPCSpawnEvent.
+	 * @param String
 	 * @param Point
-	 * @param Worker
-	 * @return Worker
+	 * @return Player
 	 */
-	public static Worker spawn(Player p, Worker worker) {
-		worker = (Worker) p.getPosition().getWorld().createAndSpawnEntity(p.getPosition(), worker);
-		Spout.getEventManager().callEvent(new NPCSpawnEvent(worker, p));
-		return worker;
+	@SuppressWarnings("unused")
+	public static Worker spawn(String name, Point loc, Player p) {
+		Worker worker = new Worker(name);
+		World world = loc.getWorld();
+		Entity entity = (Entity) world.createAndSpawnEntity(loc, worker);  //Hey this is untested so I have no clue how it should be.
+																			//Maybe what you put was right but I have no clue.
+		NPCSpawnEvent NPCSpawnEvent = new NPCSpawnEvent(worker, p);
+		Spout.getEventManager().callEvent(NPCSpawnEvent);
+		if (NPCSpawnEvent.isCancelled()) {
+			return null;
+		}else{
+			return worker;
+		}
 	}
-	
+
 	/**
 	 * Returns all the nearby blocks of the worker
 	 * @param Int

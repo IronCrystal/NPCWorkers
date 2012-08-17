@@ -34,5 +34,4 @@ public class NPCBreakBlockEvent extends NPCEvent implements Cancellable {
 	public static HandlerList getHandlerList() {
 		return handlers;
 	}
-
 }
