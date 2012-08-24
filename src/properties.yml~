@@ -1,8 +1,0 @@
-name: NPCWorkers
-main: com.volumetricpixels.supported.NPCWorkers
-version: 1.0
-platform: SERVER
-depends: [Vanilla]
-commands:
-  lumberjack:
-    description: Spawns a lumberjack.
