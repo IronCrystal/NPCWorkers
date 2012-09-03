@@ -1,8 +1,9 @@
 name: NPCWorkers
-main: com.volumetricpixels.supported.NPCWorkers
-version: 1.0
-platform: SERVER
+version: 0.1
+description: Get NPCs to work for you!
+author: IronCrystal+ThatBox
+website: http://volumetricpixels.com/forums/
+
 depends: [Vanilla]
-commands:
-  lumberjack:
-    description: Spawns a lumberjack.
+main: com.volumetricpixels.supported.NPCWorkers
+platform: BOTH
