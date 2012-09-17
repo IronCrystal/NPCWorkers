@@ -83,11 +83,10 @@ public class NPC extends BasicController implements InventoryOwner, HealthOwner 
 	@Override
 	public void onDeath() {
 		for (ItemStack drop : this.getInventory()) {//getDrops(getHealth().getLastDamageCause(), getHealth().getLastDamager())) {
-			if (drop == null) {
-				continue;
+			if(drop != null) {
+				Item item = new Item(drop, Vector3.ZERO);
+				getParent().getLastTransform().getPosition().getWorld().createAndSpawnEntity(getParent().getLastTransform().getPosition(), item);
 			}
-			Item item = new Item(drop, Vector3.ZERO);
-			getParent().getLastTransform().getPosition().getWorld().createAndSpawnEntity(getParent().getLastTransform().getPosition(), item);
 			// TODO: Drop experience
 		}
 	}
