@@ -1,46 +1,41 @@
 package com.volumetricpixels.supported.NPCWorkers.entities.protocol;
 
+import static org.spout.vanilla.protocol.ChannelBufferUtils.protocolifyPosition;
+import static org.spout.vanilla.protocol.ChannelBufferUtils.protocolifyRotation;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.spout.api.entity.Controller;
 import org.spout.api.entity.Entity;
 import org.spout.api.geo.discrete.Transform;
 import org.spout.api.inventory.ItemStack;
 import org.spout.api.protocol.EntityProtocol;
 import org.spout.api.protocol.Message;
 import org.spout.api.util.Parameter;
-import org.spout.vanilla.protocol.msg.DestroyEntitiesMessage;
+import org.spout.vanilla.protocol.msg.entity.EntityDestroyMessage;
 import org.spout.vanilla.protocol.msg.entity.EntityEquipmentMessage;
-import org.spout.vanilla.protocol.msg.entity.EntityRelativePositionMessage;
-import org.spout.vanilla.protocol.msg.entity.EntityRelativePositionRotationMessage;
-import org.spout.vanilla.protocol.msg.entity.EntityRotationMessage;
-import org.spout.vanilla.protocol.msg.entity.EntitySpawnPlayerMessage;
-import org.spout.vanilla.protocol.msg.entity.EntityTeleportMessage;
-import org.spout.vanilla.protocol.msg.entity.EntityVelocityMessage;
+import org.spout.vanilla.protocol.msg.entity.pos.EntityRelativePositionMessage;
+import org.spout.vanilla.protocol.msg.entity.pos.EntityTeleportMessage;
+import org.spout.vanilla.protocol.msg.entity.pos.EntityVelocityMessage;
+import org.spout.vanilla.protocol.msg.player.pos.PlayerSpawnMessage;
 
 import com.volumetricpixels.supported.NPCWorkers.entities.controller.NPC;
-
-
-import static org.spout.vanilla.protocol.ChannelBufferUtils.protocolifyPosition;
-import static org.spout.vanilla.protocol.ChannelBufferUtils.protocolifyRotation;
 
 /**
  * Provides compatibility with VanillaPlugin's protocol
  */
 public class NPCProtocol implements EntityProtocol {
 	public Message[] getSpawnMessage(Entity entity) {
-		Controller c = entity.getController();
-		if (c == null || !(c instanceof NPC)) {
+		if (entity == null || !(entity instanceof NPC)) {
 			return new Message[0];
 		}
-		NPC npc = (NPC) c;
+		NPC npc = (NPC) entity;
 		int id = entity.getId();
-		int x = (int) (entity.getPosition().getX() * 32);
-		int y = (int) (entity.getPosition().getY() * 32);
-		int z = (int) (entity.getPosition().getZ() * 32);
-		int r = (int) (-entity.getYaw() * 32);
-		int p = (int) (entity.getPitch() * 32);
+		int x = (int) (entity.getTransform().getPosition().getX() * 32);
+		int y = (int) (entity.getTransform().getPosition().getY() * 32);
+		int z = (int) (entity.getTransform().getPosition().getZ() * 32);
+		int r = (int) (-entity.getTransform().getYaw() * 32);
+		int p = (int) (entity.getTransform().getPitch() * 32);
 
 		int item = 0;
 		ItemStack heldItem = npc.getHeldItem();
@@ -50,25 +45,23 @@ public class NPCProtocol implements EntityProtocol {
 
 		List<Parameter<?>> parameters = new ArrayList<Parameter<?>>();
 		parameters.add(new Parameter<Byte>(Parameter.TYPE_BYTE, 0, (byte) 0));
-		return new Message[]{new EntitySpawnPlayerMessage(id, npc.getName(), x, y, z, r, p, item, parameters), new EntityEquipmentMessage(id, 0, heldItem)};
+		return new Message[]{new PlayerSpawnMessage(id, npc.getName(), x, y, z, r, p, item, parameters), new EntityEquipmentMessage(id, 0, heldItem)};
 	}
 
 	public Message[] getDestroyMessage(Entity entity) {
-		Controller c = entity.getController();
-		if (c == null || !(c instanceof NPC)) {
+		if (entity == null || !(entity instanceof NPC)) {
 			return new Message[0];
 		}
-		return new Message[]{new DestroyEntitiesMessage(new int[]{entity.getId()})};
+		return new Message[]{new EntityDestroyMessage(new int[]{entity.getId()})};
 	}
 
 	public Message[] getUpdateMessage(Entity entity) {
-		Controller c = entity.getController();
-		if (c == null || !(c instanceof NPC)) {
+		if (entity == null || !(entity instanceof NPC)) {
 			return new Message[0];
 		}
-		NPC npc = (NPC) c;
+		NPC npc = (NPC) entity;
 		Transform prevTransform = npc.getTransformLive();
-		Transform newTransform = entity.getTransform();
+		Transform newTransform = entity.getTransform().getTransform();
 
 		int lastX = protocolifyPosition(prevTransform.getPosition().getX());
 		int lastY = protocolifyPosition(prevTransform.getPosition().getY());
@@ -94,14 +87,14 @@ public class NPCProtocol implements EntityProtocol {
 			boolean looked = !prevTransform.getRotation().equals(newTransform.getRotation());
 			if (moved) {
 				if (looked) {
-					messages.add(new EntityRelativePositionRotationMessage(entity.getId(), deltaX, deltaY, deltaZ, newYaw, newPitch));
+					messages.add(new EntityRelativePositionMessage(entity.getId(), deltaX, deltaY, deltaZ));
 					npc.setTransformLive(newTransform);
 				} else {
 					messages.add(new EntityRelativePositionMessage(entity.getId(), deltaX, deltaY, deltaZ));
 					npc.setTransformLive(newTransform);
 				}
 			} else if (looked) {
-				messages.add(new EntityRotationMessage(entity.getId(), newYaw, newPitch));
+				//messages.add(new EntityRotationMessage(entity.getId(), newYaw, newPitch));
 				npc.setTransformLive(newTransform);
 			}
 		}
